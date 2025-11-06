@@ -16,7 +16,7 @@ function App() {
     const content = window.prompt("Enter design/creation name");
     if (content) {
       const newDesign: Design = {
-        id: Date.now().toString(),
+        id: crypto.randomUUID(),
         content: content
       };
       setDesigns([...designs, newDesign]);
