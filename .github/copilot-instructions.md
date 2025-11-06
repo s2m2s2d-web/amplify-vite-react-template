@@ -55,7 +55,21 @@ This command:
 1. Runs TypeScript compiler (`tsc`) to check types
 2. Builds the application using Vite
 
-**Note**: The build may fail if `amplify_outputs.json` is not present. This file is generated when deploying the Amplify backend and contains the configuration for AWS services. For local development without AWS deployment, you may need to mock or skip the Amplify configuration.
+**Note**: The build may fail if `amplify_outputs.json` is not present. This file is generated when deploying the Amplify backend and contains the configuration for AWS services. To resolve this:
+- For full functionality, run `npx ampx sandbox` to deploy a sandbox environment
+- For local development without AWS deployment, you can conditionally import the outputs file:
+  ```typescript
+  // Example approach in main.tsx
+  import { Amplify } from "aws-amplify";
+  
+  // Conditionally configure Amplify only if outputs exist
+  try {
+    const outputs = await import("../amplify_outputs.json");
+    Amplify.configure(outputs.default);
+  } catch (error) {
+    console.warn("Amplify outputs not found. Running without backend.");
+  }
+  ```
 
 ### Linting
 
